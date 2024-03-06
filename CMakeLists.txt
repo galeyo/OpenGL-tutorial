@@ -15,14 +15,20 @@ file(GLOB_RECURSE HEADER_FILES
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
-# Find glfw
-find_package(glfw3)
+set(GLFW_ROOT_DIR dependencies/glfw-3.4)
+set(GLAD_ROOT_DIR dependencies/glad)
 
-# Include GLAD
-set(GLAD_ROOT_DIR external/glad)
+add_subdirectory(${GLFW_ROOT_DIR})
 add_subdirectory(${GLAD_ROOT_DIR})
-target_include_directories(${PROJECT_NAME} PUBLIC ${GLAD_ROOT_DIR}/include)
-target_link_directories(${PROJECT_NAME} PRIVATE ${GLAD_ROOT_DIR}/src)
+
+target_include_directories(${PROJECT_NAME}
+	PUBLIC ${GLFW_ROOT_DIR}/include
+	PUBLIC ${GLAD_ROOT_DIR}/include
+)
+target_link_directories(${PROJECT_NAME} 
+	PRIVATE ${GLFW_ROOT_DIR}/src
+	PRIVATE ${GLAD_ROOT_DIR}/src
+)
 
 
 target_link_libraries(${PROJECT_NAME} glfw glad)
